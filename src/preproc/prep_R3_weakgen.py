@@ -51,15 +51,15 @@ from scipy import sparse, stats
 
 
 # In[3]:
-
-
-DATA_DIR = '../dat/raw/Webscope_R3'
+print(os.getcwd())
+DATA_DIR = '\dat\raw\Webscope_R3'
 
 
 # In[4]:
 
 
 OUT_DATA_DIR = '../dat/proc/R3_wg'
+print(f"this is the out dir: {OUT_DATA_DIR}")
 
 
 # ## R3
@@ -67,10 +67,16 @@ OUT_DATA_DIR = '../dat/proc/R3_wg'
 # In[5]:
 
 
-tr_vd_data = pd.read_csv(os.path.join(DATA_DIR, 'ydata-ymusic-rating-study-v1_0-train.txt'), sep="\t", header=None, 
-                       names=['userId', 'songId', 'rating'],engine="python")
-test_data = pd.read_csv(os.path.join(DATA_DIR, 'ydata-ymusic-rating-study-v1_0-test.txt'), sep="\t", header=None, 
-                       names=['userId', 'songId', 'rating'],engine="python")
+train_file_path = os.path.join(DATA_DIR, 'ydata-ymusic-rating-study-v1_0-train.txt')
+test_file_path = os.path.join(DATA_DIR, 'ydata-ymusic-rating-study-v1_0-test.txt')
+
+# Reading the train data
+tr_vd_data = pd.read_csv(train_file_path, sep="\t", header=None, 
+                         names=['userId', 'songId', 'rating'], engine="python")
+
+# Reading the test data
+test_data = pd.read_csv(test_file_path, sep="\t", header=None, 
+                        names=['userId', 'songId', 'rating'], engine="python")
 
 
 # In[6]:
@@ -346,7 +352,7 @@ def subsample_negatives(data, full_data=None, random_state=0, verbose=False):
 
     np.random.seed(random_state)
 
-    for u in xrange(n_users):
+    for u in range(n_users):
         p = np.ones(n_items, dtype='float32')
         p[full_data[u].nonzero()[1]] = 0
         p /= p.sum()
